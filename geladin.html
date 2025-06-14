@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Geladinho Gourmet</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: #fefefe;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #ff5e57;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .card h3 {
+      margin: 10px 0;
+      font-size: 18px;
+    }
+    .card button {
+      padding: 8px 15px;
+      background-color: #ff5e57;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    #cart {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      background: #333;
+      color: white;
+      padding: 15px;
+      border-radius: 10px;
+      max-width: 300px;
+      z-index: 100;
+    }
+    #cart h4 {
+      margin: 0 0 10px;
+    }
+    #cart ul {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 10px;
+    }
+    #cart ul li {
+      font-size: 14px;
+    }
+    #cart button {
+      background: #25D366;
+      color: white;
+      border: none;
+      padding: 10px;
+      width: 100%;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    #whatsapp-float {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 100;
+    }
+    #whatsapp-float img {
+      width: 60px;
+      height: 60px;
+    }
+  </style>
+</head>
+<body>
+
+<header>🍧 Geladinho Gourmet</header>
+
+<div class="container" id="products">
+  <!-- Produtos serão adicionados por JS -->
+</div>
+
+<div id="cart">
+  <h4>Seu Pedido</h4>
+  <ul id="cart-items"></ul>
+  <strong>Total: R$ <span id="total">0.00</span></strong><br><br>
+  <button onclick="sendToWhatsApp()">Enviar para WhatsApp</button>
+</div>
+
+<div id="whatsapp-float">
+  <a href="https://wa.me/5599999999999" target="_blank">
+    <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp">
+  </a>
+</div>
+
+<script>
+  const produtos = [
+    "Morango", "Chocolate", "Maracujá", "Uva", "Coco",
+    "Leite Ninho", "Ovomaltine", "Doce de Leite", "Paçoca", "Nutella",
+    "Abacaxi", "Melancia", "Limão", "Tamarindo", "Café",
+    "Banana", "Açaí", "Romeu e Julieta", "Manga", "Chiclete"
+  ];
+
+  const container = document.getElementById("products");
+  const cartItems = document.getElementById("cart-items");
+  const totalSpan = document.getElementById("total");
+  const cart = [];
+
+  produtos.forEach(sabor => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `<h3>${sabor}</h3><p>R$ 3,50</p><button onclick="addToCart('${sabor}')">Adicionar</button>`;
+    container.appendChild(card);
+  });
+
+  function addToCart(item) {
+    cart.push(item);
+    renderCart();
+  }
+
+  function renderCart() {
+    cartItems.innerHTML = "";
+    let total = 0;
+    cart.forEach((item, i) => {
+      cartItems.innerHTML += `<li>${item} - R$ 3,50</li>`;
+      total += 3.5;
+    });
+    totalSpan.textContent = total.toFixed(2);
+  }
+
+  function sendToWhatsApp() {
+    if (cart.length === 0) {
+      alert("Seu carrinho está vazio!");
+      return;
+    }
+    const msg = encodeURIComponent("Olá, gostaria de pedir:\n" + cart.map(i => `- ${i}`).join("\n") + `\nTotal: R$ ${cart.length * 3.5}`);
+    window.open(`https://wa.me/5531991916476?text=${msg}`, "_blank");
+  }
+</script>
+
+</body>
+</html>
